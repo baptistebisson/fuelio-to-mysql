@@ -124,7 +124,7 @@ class FuelioToMysqlCommand extends Command
                 }
 
                 // Inserting data to database
-                $output->writeln('Found a total of '.count($costCategories).' data');
+                $output->writeln('Found a total of '.count($data).' data');
                 foreach ($data as $datum) {
                     $sth = $pdo->prepare(
                         'INSERT INTO consumption (vehicle_id, date, odo, fuel, price, volume_price, notes, average, city)
