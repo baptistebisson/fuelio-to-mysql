@@ -1,5 +1,6 @@
 create table if not exists consumption
 (
+    vehicle_id   int          not null,
     date         timestamp    not null
         primary key,
     odo          int          null,
@@ -20,6 +21,7 @@ create table if not exists cost_category
 
 create table if not exists cost
 (
+    vehicle_id    int          not null,
     date          timestamp    not null
         primary key,
     title         varchar(255) null,
