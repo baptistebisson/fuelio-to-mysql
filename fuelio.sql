@@ -1,3 +1,18 @@
+create table if not exists cost_category
+(
+    id   int auto_increment
+        primary key,
+    name varchar(25) null
+);
+
+create table if not exists vehicle
+(
+    id          int          not null
+        primary key,
+    name        varchar(20)  null,
+    description varchar(255) null
+);
+
 create table if not exists consumption
 (
     vehicle_id   int          not null,
@@ -9,14 +24,9 @@ create table if not exists consumption
     volume_price float        null,
     notes        text         null,
     average      float        null,
-    city         varchar(255) null
-);
-
-create table if not exists cost_category
-(
-    id   int auto_increment
-        primary key,
-    name varchar(25) null
+    city         varchar(255) null,
+    constraint consumption_vehicle_id_fk
+        foreign key (vehicle_id) references vehicle (id)
 );
 
 create table if not exists cost
@@ -30,6 +40,8 @@ create table if not exists cost
     cost          float        not null,
     cost_category int          not null,
     constraint cost_cost_category_id_fk
-        foreign key (cost_category) references cost_category (id)
+        foreign key (cost_category) references cost_category (id),
+    constraint cost_vehicle_id_fk
+        foreign key (vehicle_id) references vehicle (id)
 );
 
