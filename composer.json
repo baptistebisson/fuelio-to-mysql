@@ -1,0 +1,19 @@
+{
+    "require": {
+        "symfony/console": "^7.1",
+        "ext-pdo": "*",
+        "symfony/dotenv": "^7.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "friendsofphp/php-cs-fixer": "^3.58"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "php-cs-fixer": "php-cs-fixer --rules=@PSR1"
+    }
+}

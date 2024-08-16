@@ -1,0 +1,5 @@
+/.phpcs-cache
+/.env
+/.idea/
+/.php-cs-fixer.cache
+/vendor/
