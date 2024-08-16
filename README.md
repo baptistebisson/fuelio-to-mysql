@@ -55,6 +55,8 @@ composer install
 php console.php app:sync --folder=/path/to/fuelio
 ```
 
+You can run this command multiple time, data will be updated if changed for same date.
+
 #### Output example
 
 ```

@@ -59,12 +59,17 @@ class FuelioToMysqlCommand extends Command
              * @var Cost[] $costs
              */
             $costs = [];
+
+            // Opening file
             if (($handle = fopen($file, 'r')) !== false) {
                 $getData = false;
                 $getCosts = false;
                 $getCostCategories = false;
+
+                // Looping over each rows
                 while (($line = fgetcsv($handle)) !== false) {
                     if (str_starts_with($line[0], '##')) {
+                        // We are at the end of a section, need to stop getting data
                         $getData = false;
                         $getCosts = false;
                         $getCostCategories = false;
@@ -117,6 +122,7 @@ class FuelioToMysqlCommand extends Command
                         $costs[] = $cost;
                     }
                 }
+
                 // Inserting data to database
                 $output->writeln('Found a total of '.count($costCategories).' data');
                 foreach ($data as $datum) {
