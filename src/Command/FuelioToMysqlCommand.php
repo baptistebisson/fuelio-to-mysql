@@ -37,13 +37,16 @@ class FuelioToMysqlCommand extends Command
         $files = [];
         foreach (scandir($folder) as $file) {
             if (preg_match_all('/vehicle-\d+-sync\.csv/m', $file, $matches)) {
-                $files[] = $folder.'/'.$file;
+                $split = explode('-', $file);
+                $files[$split[1]] = $folder.'/'.$file;
             }
         }
 
         $output->writeln('Found '.count($files).' files');
 
-        foreach ($files as $file) {
+        foreach ($files as $vehicle => $file) {
+            $output->writeln('Processing '.$file);
+
             /**
              * @var Data[] $data
              */
@@ -83,6 +86,7 @@ class FuelioToMysqlCommand extends Command
 
                     if ($getData) {
                         $dataItem = new Data();
+                        $dataItem->setVehicleId($vehicle);
                         $dataItem->setDate(new \DateTime($line[0]));
                         $dataItem->setOdo((int) $line[1]);
                         $dataItem->setFuel((float) $line[2]);
@@ -103,6 +107,7 @@ class FuelioToMysqlCommand extends Command
 
                     if ($getCosts) {
                         $cost = new Cost();
+                        $cost->setVehicleId($vehicle);
                         $cost->setDate(new \DateTime($line[1]));
                         $cost->setTitle($line[0]);
                         $cost->setNotes('' !== $line[4] ? $line[4] : null);
@@ -116,13 +121,14 @@ class FuelioToMysqlCommand extends Command
                 $output->writeln('Found a total of '.count($costCategories).' data');
                 foreach ($data as $datum) {
                     $sth = $pdo->prepare(
-                        'INSERT INTO consumption (date, odo, fuel, price, volume_price, notes, average, city) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+                        'INSERT INTO consumption (vehicle_id, date, odo, fuel, price, volume_price, notes, average, city)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON DUPLICATE key UPDATE odo=?, fuel=?, price=?, volume_price=?, notes=?, average=?, city=?'
                     );
                     try {
                         $sth->execute(
                             [
+                                $datum->getVehicleId(),
                                 $datum->getDate()->format('Y-m-d H:i:s'),
                                 $datum->getOdo(),
                                 $datum->getFuel(),
@@ -158,13 +164,14 @@ ON DUPLICATE key UPDATE odo=?, fuel=?, price=?, volume_price=?, notes=?, average
                 $output->writeln('Found a total of '.count($costs).' costs');
                 foreach ($costs as $cost) {
                     $sth = $pdo->prepare(
-                        'INSERT INTO cost (date, title, odo, notes, cost, cost_category) 
-VALUES (?, ?, ?, ?, ?, ?) 
+                        'INSERT INTO cost (vehicle_id, date, title, odo, notes, cost, cost_category)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 ON DUPLICATE KEY UPDATE title=?, odo=?, notes=?, cost=?, cost_category=?'
                     );
                     try {
                         $sth->execute(
                             [
+                                $cost->getVehicleId(),
                                 $cost->getDate()->format('Y-m-d H:i:s'),
                                 $cost->getTitle(),
                                 $cost->getOdo(),

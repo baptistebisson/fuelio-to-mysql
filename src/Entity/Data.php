@@ -4,6 +4,7 @@ namespace App\Entity;
 
 class Data
 {
+    protected int $vehicleId;
     protected \DateTime $date;
     protected int $odo;
     protected float $fuel;
@@ -12,6 +13,16 @@ class Data
     protected ?string $notes;
     protected float $average;
     protected ?string $city;
+
+    public function getVehicleId(): int
+    {
+        return $this->vehicleId;
+    }
+
+    public function setVehicleId(int $vehicleId): void
+    {
+        $this->vehicleId = $vehicleId;
+    }
 
     public function getDate(): \DateTime
     {

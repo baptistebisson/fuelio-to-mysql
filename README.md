@@ -15,8 +15,6 @@ Check `src/Entity` files.
 - PHP 8.3
 - MySQL
 
-### Query
-
 ## Getting Started
 
 ### Prerequisites
@@ -41,6 +39,10 @@ git clone https://github.com/baptistebisson/fuelio-to-mysql.git
 cd fuelio-to-mysqm && cp .env.example .env
 ```
 
+- Setup the database
+
+Create a fuelio database and import the `fuelio.sql` file.
+
 - Setup composer
 
 ```bash
@@ -56,9 +58,18 @@ php console.php app:sync --folder=/path/to/fuelio
 #### Output example
 
 ```
-Found 1 files
+Found 3 files
+Processing vehicle-2-sync.csv
+Found a total of 15 data
+Found a total of 15 categories
+Found a total of 21 costs
+Processing vehicle-3-sync.csv
 Found a total of 15 data
 Found a total of 15 categories
 Found a total of 7 costs
+Processing vehicle-4-sync.csv
+Found a total of 0 data
+Found a total of 0 categories
+Found a total of 0 costs
 Done!
 ```

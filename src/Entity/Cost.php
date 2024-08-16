@@ -4,12 +4,23 @@ namespace App\Entity;
 
 class Cost
 {
+    protected int $vehicleId;
     protected \DateTime $date;
     protected string $title;
     protected ?float $odo;
     protected ?string $notes;
     protected float $cost;
     protected int $costCategory;
+
+    public function getVehicleId(): int
+    {
+        return $this->vehicleId;
+    }
+
+    public function setVehicleId(int $vehicleId): void
+    {
+        $this->vehicleId = $vehicleId;
+    }
 
     public function getDate(): \DateTime
     {
